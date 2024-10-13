@@ -1,0 +1,32 @@
+﻿@model List<HomeGardenWeb.Models.WateringFrequency>
+
+<h2 class="text-center mb-5">Watering Frequencies</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Frequency Name</th>
+            <th>Water Volume (ml)</th>
+            <th>Watering Interval (days)</th>
+            <th>Plant</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.frequency_id</td>
+                <td>@item.frequency_name</td>
+                <td>@item.water_volume</td>
+                <td>@item.watering_interval_days</td>
+                <td>@item.Plant.name</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-controller="WateringFrequencies" asp-action="Edit" asp-route-id="@item.frequency_id">Edit</a>
+               
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

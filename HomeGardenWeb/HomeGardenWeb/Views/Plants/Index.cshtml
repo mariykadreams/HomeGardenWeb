@@ -1,0 +1,104 @@
+﻿@model List<HomeGardenWeb.Models.Plants>
+
+<h2 class="text-center mb-5">List of Plants</h2>
+
+<div class="row mb-5">
+    <div class="col">
+        <a class="btn btn-primary" asp-controller="Plants" asp-action="Create">New Plant</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Category</th> 
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var plant in Model)
+        {
+            <tr>
+                <td>@plant.plant_id</td>
+                <td>@plant.name</td>
+                <td>@plant.description</td>
+                <td>@plant.price</td>
+                <td>@plant.Category?.category_name</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-controller="Plants" asp-action="Edit" asp-route-id="@plant.plant_id">Edit</a>
+                    <a class="btn btn-sm btn-danger" onclick="confirmDelete('@plant.plant_id')" href="javascript:void(0);">Delete</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    function confirmDelete(plantId) {
+        console.log("Deleting plant with ID: " + plantId);  // Логируем перед удалением
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+            customClass: {
+                confirmButton: 'btn btn-primary me-2',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/Plants/Delete/' + plantId,
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Your plant has been deleted.',
+                                icon: 'success',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong.',
+                            icon: 'error',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+

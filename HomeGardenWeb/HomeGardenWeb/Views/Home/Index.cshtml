@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model IEnumerable<HomeGardenWeb.Models.Plants>
+
+<div class="row pb-3">
+    @foreach (var plant in Model)
+    {
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                       
+                        <div class="pl-1">
+                            <p class="card-title h5 text-dark opacity-75 text-uppercase text-center mt-2">@plant.name</p>
+                            <p class="card-title text-warning text-center">Category: <b>@plant.Category.category_name</b></p>
+                        </div>
+                        <div class="pl-1">
+                            <p class="text-dark opacity-75 text-center mb-0">
+                                Price:
+                                <span>
+                                    @plant.price.ToString("c")
+                                </span>
+                            </p>
+                        </div>
+                        <div class="pl-1">
+                            <p class="text-dark opacity-75 text-center">
+                                <span>@plant.description</span>
+                            </p>
+                        </div>
+                        <div>
+                            <a asp-action="Details" asp-route-id="@plant.plant_id" class="btn btn-primary bg-gradient border-0 form-control">
+                                Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

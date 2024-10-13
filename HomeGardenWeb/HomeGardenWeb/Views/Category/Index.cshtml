@@ -1,0 +1,106 @@
+﻿@model List<Category>
+@{
+}
+
+<h2 class="text-center mb-5">List of Category</h2>
+
+<div class="row mb-5">
+    <div class="col">
+       <a class="btn btn-primary" asp-controller="Category" asp-action="Create">New Category</a>
+    </div>
+
+    <div class="col">
+
+    </div>
+</div>
+
+<table class="table"
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(var category in Model)
+        {
+            <tr>
+                 <td>@category.category_id</td>
+                 <td>@category.category_name</td>
+                 <td style="white-space:nowrap">
+                         <a class="btn btn-primary btn-sm" asp-controller="Category" asp-action="Edit"
+                            asp-route-id="@category.category_id">Edit</a>
+                             <a class="btn btn-danger btn-sm" href="javascript:void(0);" onclick="confirmDelete('@category.category_id')">Delete</a>
+
+                 </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+    function confirmDelete(categoryId) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+            customClass: {
+                confirmButton: 'btn btn-primary me-2',  // стиль Bootstrap для кнопки подтверждения с отступом
+                cancelButton: 'btn btn-danger'          // стиль Bootstrap для кнопки отмены
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/Category/Delete/' + categoryId,
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Your category has been deleted.',
+                                icon: 'success',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'  // стиль Bootstrap для кнопки "ОК"
+                                },
+                                buttonsStyling: false
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'  // стиль Bootstrap для кнопки "ОК"
+                                },
+                                buttonsStyling: false
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong.',
+                            icon: 'error',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'  // стиль Bootstrap для кнопки "ОК"
+                            },
+                            buttonsStyling: false
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>
+
