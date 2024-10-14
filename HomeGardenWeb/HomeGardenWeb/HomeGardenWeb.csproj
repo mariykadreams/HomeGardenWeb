@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Views\WateringFrequency\" />
+    <Folder Include="wwwroot\lib\bootstrap\dist\css\" />
   </ItemGroup>
 
 </Project>
