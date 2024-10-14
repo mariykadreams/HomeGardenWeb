@@ -40,8 +40,6 @@ namespace HomeGardenWeb.Controllers
             return View();
         }
 
-
-
         [HttpPost]
         public IActionResult Create(PlantsDto plantDto)
         {
@@ -54,31 +52,55 @@ namespace HomeGardenWeb.Controllers
                 }).ToList();
 
                 ViewBag.Categories = new SelectList(categories, "category_id", "category_name");
-
                 return View(plantDto);
             }
 
-            var plant = new Plants
+            try
             {
-                name = plantDto.Name, 
-                description = plantDto.Description,  
-                price = plantDto.Price, 
-                category_id = plantDto.CategoryId 
-            };
+                var plant = new Plants
+                {
+                    name = plantDto.Name,
+                    description = plantDto.Description,
+                    price = plantDto.Price,
+                    category_id = plantDto.CategoryId
+                };
 
-            _context.Plants.Add(plant);
-            _context.SaveChanges();
+                _context.Plants.Add(plant);
+                _context.SaveChanges();  
 
-            return RedirectToAction("Index");
+                var wateringFrequency = new WateringFrequency
+                {
+                    frequency_name = plantDto.FrequencyName,
+                    water_volume = plantDto.WaterVolume,
+                    watering_interval_days = plantDto.WateringIntervalDays,
+                    notes = plantDto.Notes,
+                    plant_id = plant.plant_id 
+                };
+
+                _context.WateringFrequency.Add(wateringFrequency);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");  
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);  
+                return View(plantDto);
+            }
         }
 
         public IActionResult Edit(int id)
         {
-            var plant = _context.Plants.Find(id);
+            var plant = _context.Plants
+                .Include(p => p.WateringFrequencies) 
+                .FirstOrDefault(p => p.plant_id == id);
+
             if (plant == null)
             {
                 return RedirectToAction("Index");
             }
+
+            var wateringFrequency = plant.WateringFrequencies?.FirstOrDefault() ?? new WateringFrequency();
 
             var categories = _context.Category.Select(c => new
             {
@@ -90,10 +112,14 @@ namespace HomeGardenWeb.Controllers
 
             var plantDto = new PlantsDto
             {
-                Name = plant.name, 
-                Description = plant.description,  
-                Price = plant.price, 
-                CategoryId = plant.category_id 
+                Name = plant.name,
+                Description = plant.description,
+                Price = plant.price,
+                CategoryId = plant.category_id,
+                FrequencyName = wateringFrequency.frequency_name,
+                WaterVolume = wateringFrequency.water_volume,
+                WateringIntervalDays = wateringFrequency.watering_interval_days,
+                Notes = wateringFrequency.notes
             };
 
             return View(plantDto);
@@ -112,40 +138,71 @@ namespace HomeGardenWeb.Controllers
                 }).ToList();
 
                 ViewBag.Categories = new SelectList(categories, "category_id", "category_name", plantDto.CategoryId);
-
                 return View(plantDto);
             }
 
-            var plant = _context.Plants.Find(id);
+            var plant = _context.Plants
+                .Include(p => p.WateringFrequencies)
+                .FirstOrDefault(p => p.plant_id == id);
+
             if (plant == null)
             {
                 return RedirectToAction("Index");
             }
 
-            plant.name = plantDto.Name; 
-            plant.description = plantDto.Description; 
-            plant.price = plantDto.Price; 
-            plant.category_id = plantDto.CategoryId; 
+            plant.name = plantDto.Name;
+            plant.description = plantDto.Description;
+            plant.price = plantDto.Price;
+            plant.category_id = plantDto.CategoryId;
+
+            var wateringFrequency = plant.WateringFrequencies?.FirstOrDefault();
+            if (wateringFrequency != null)
+            {
+                wateringFrequency.frequency_name = plantDto.FrequencyName;
+                wateringFrequency.water_volume = plantDto.WaterVolume;
+                wateringFrequency.watering_interval_days = plantDto.WateringIntervalDays;
+                wateringFrequency.notes = plantDto.Notes;
+            }
+            else
+            {
+                wateringFrequency = new WateringFrequency
+                {
+                    frequency_name = plantDto.FrequencyName,
+                    water_volume = plantDto.WaterVolume,
+                    watering_interval_days = plantDto.WateringIntervalDays,
+                    notes = plantDto.Notes,
+                    plant_id = plant.plant_id
+                };
+                _context.WateringFrequency.Add(wateringFrequency);
+            }
 
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
-
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var plant = _context.Plants.Find(id);
+            var plant = _context.Plants
+                .Include(p => p.WateringFrequencies) 
+                .FirstOrDefault(p => p.plant_id == id);
+
             if (plant == null)
             {
                 return Json(new { success = false, message = "Plant not found" });
             }
 
+            if (plant.WateringFrequencies != null && plant.WateringFrequencies.Any())
+            {
+                _context.WateringFrequency.RemoveRange(plant.WateringFrequencies);
+            }
+
             _context.Plants.Remove(plant);
             _context.SaveChanges();
 
-            return Json(new { success = true, message = "Plant has been deleted" });
+            return Json(new { success = true});
         }
+
 
 
     }

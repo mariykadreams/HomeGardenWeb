@@ -21,9 +21,5 @@ namespace HomeGardenWeb.Models
         [Display(Name = "Notes")]
         public string Notes { get; set; }
 
-        [Required(ErrorMessage = "Plant ID is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please select a valid Plant")]
-        [Display(Name = "Plant ID")]
-        public int PlantId { get; set; }
     }
 }

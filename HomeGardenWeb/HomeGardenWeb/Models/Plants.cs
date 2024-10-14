@@ -24,5 +24,7 @@ namespace HomeGardenWeb.Models
         public int category_id { get; set; }
 
         public Category Category { get; set; }
+
+        public ICollection<WateringFrequency> WateringFrequencies { get; set; }
     }
 }

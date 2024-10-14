@@ -52,8 +52,8 @@
             confirmButtonText: "Yes, delete it!",
             cancelButtonText: "Cancel",
             customClass: {
-                confirmButton: 'btn btn-primary me-2',  // стиль Bootstrap для кнопки подтверждения с отступом
-                cancelButton: 'btn btn-danger'          // стиль Bootstrap для кнопки отмены
+                confirmButton: 'btn btn-primary me-2', 
+                cancelButton: 'btn btn-danger'          
             },
             buttonsStyling: false
         }).then((result) => {
@@ -68,7 +68,7 @@
                                 text: 'Your category has been deleted.',
                                 icon: 'success',
                                 customClass: {
-                                    confirmButton: 'btn btn-primary'  // стиль Bootstrap для кнопки "ОК"
+                                    confirmButton: 'btn btn-primary' 
                                 },
                                 buttonsStyling: false
                             });
@@ -81,7 +81,7 @@
                                 text: response.message,
                                 icon: 'error',
                                 customClass: {
-                                    confirmButton: 'btn btn-primary'  // стиль Bootstrap для кнопки "ОК"
+                                    confirmButton: 'btn btn-primary' 
                                 },
                                 buttonsStyling: false
                             });
@@ -93,7 +93,7 @@
                             text: 'Something went wrong.',
                             icon: 'error',
                             customClass: {
-                                confirmButton: 'btn btn-primary'  // стиль Bootstrap для кнопки "ОК"
+                                confirmButton: 'btn btn-primary'  
                             },
                             buttonsStyling: false
                         });

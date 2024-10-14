@@ -30,19 +30,47 @@
                 <label class="col-sm-4 col-form-label">Category</label>
                 <div class="col-sm-8">
                     <select class="form-control" asp-for="CategoryId" asp-items="ViewBag.Categories">
-                        <option value="" disabled selected>---</option> <!-- Прочерк не будет частью выбора -->
+                        <option value="" disabled selected>---</option>
                     </select>
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
             </div>
 
+     
+            <h4 class="text-center mb-3">Watering Information</h4>
 
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Frequency Name</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="FrequencyName" />
+                    <span asp-validation-for="FrequencyName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Water Volume (ml)</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="WaterVolume" />
+                    <span asp-validation-for="WaterVolume" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Watering Interval (days)</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="WateringIntervalDays" />
+                    <span asp-validation-for="WateringIntervalDays" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Notes</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="Notes" />
+                </div>
+            </div>
 
             <div class="row">
                 <div class="offset-sm-4 col-sm-4 d-grid">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-
                 <div class="col-sm-4 d-grid">
                     <a class="btn btn-outline-primary" asp-controller="Plants" asp-action="Index">Cancel</a>
                 </div>

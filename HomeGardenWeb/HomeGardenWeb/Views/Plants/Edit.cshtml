@@ -37,12 +37,38 @@
                 </div>
             </div>
 
+            <h4 class="text-center mb-3">Watering Information</h4>
+
             <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Upload Image (optional)</label>
+                <label class="col-sm-4 col-form-label">Frequency Name</label>
                 <div class="col-sm-8">
-                    <input type="file" class="form-control" name="PlantImage" />
+                    <input class="form-control" asp-for="FrequencyName" />
+                    <span asp-validation-for="FrequencyName" class="text-danger"></span>
                 </div>
             </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Water Volume (ml)</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="WaterVolume" />
+                    <span asp-validation-for="WaterVolume" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Watering Interval (days)</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="WateringIntervalDays" />
+                    <span asp-validation-for="WateringIntervalDays" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Notes</label>
+                <div class="col-sm-8">
+                    <textarea class="form-control" asp-for="Notes"></textarea>
+                </div>
+            </div>
+
+
+           
 
             <div class="row">
                 <div class="offset-sm-4 col-sm-4 d-grid">
