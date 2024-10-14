@@ -10,7 +10,7 @@
             <th>Water Volume (ml)</th>
             <th>Watering Interval (days)</th>
             <th>Plant</th>
-            <th>Actions</th>
+            
         </tr>
     </thead>
     <tbody>
@@ -22,10 +22,7 @@
                 <td>@item.water_volume</td>
                 <td>@item.watering_interval_days</td>
                 <td>@item.Plant.name</td>
-                <td>
-                    <a class="btn btn-primary btn-sm" asp-controller="WateringFrequencies" asp-action="Edit" asp-route-id="@item.frequency_id">Edit</a>
                
-                </td>
             </tr>
         }
     </tbody>

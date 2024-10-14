@@ -25,6 +25,21 @@ namespace HomeGardenWeb.Controllers
             return View(plants);
         }
 
+        public IActionResult Details(int id)
+        {
+            // Найти растение по id
+            var plant = _context.Plants.Include(p => p.Category).FirstOrDefault(p => p.plant_id == id);
+
+            if (plant == null)
+            {
+                return NotFound();
+            }
+
+            // Передать информацию о растении в представление
+            return View(plant);
+        }
+
+
         public IActionResult Privacy()
         {
             return View();
